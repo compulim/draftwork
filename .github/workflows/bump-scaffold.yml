@@ -9,9 +9,9 @@ on:
         required: true
         type: string
       use-react:
-        default: true
+        default: false
         description: Use React
-        required: false
+        required: true
         type: boolean
       skip-integration-test:
         default: false
