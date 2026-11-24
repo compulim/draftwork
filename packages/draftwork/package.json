@@ -1,0 +1,20 @@
+{
+  "name": "draftwork",
+  "version": "0.0.0-0",
+  "description": "",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^21.0.4",
+    "@types/node": "^26.6.7"
+  }
+}
