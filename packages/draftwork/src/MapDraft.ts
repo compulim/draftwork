@@ -6,10 +6,7 @@ type MapDraftEntry<K, V> = { type: 'clear' } | { type: 'delete'; key: K } | { ty
 class MapDraft<K, V> {
   #entries: MapDraftEntry<K, V>[] = [];
 
-  get ['~types'](): {
-    key: K;
-    value: V;
-  } {
+  get ['~types'](): { key: K; value: V } {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return {} as any;
   }
