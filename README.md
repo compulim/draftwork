@@ -1,6 +1,6 @@
 # `draftwork`
 
-> This packge is built from ground up following strict test driven development principle.
+> This package is built from ground up following strict test driven development principle.
 
 Pass delta, don't pass complete picture.
 
@@ -79,7 +79,7 @@ Pass the delta, don't pass the complete picture.
 
 Memory stay `O(n)`. Processing down to `O(log n)` from `O(n)`.
 
-Each side owns its copy of the complete copy of the data, it don't cross the border. Deltas are drafted and replayed on both side.
+Each side owns its complete copy, it don't cross the border. Deltas are drafted and replayed on each side.
 
 ## Behaviors
 
