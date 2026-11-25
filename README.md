@@ -119,7 +119,7 @@ Expose the data structure in a limited/read-only fashion: as iterable/iterator. 
 
 Array is commonly operated by index and it requires dirty read. `draftwork` prefer transactional environment (clean read). While some operations play well with clean read (`pop`, `push`, `shift`, `unshift`), some don't (`splice`, index accessor, etc.)
 
-We are thinking how to make array operates in "clean read" system, such as borrowing concepts from DOM `NodeCollection`: `insertAfter`, `insertBefore`, etc.
+We are thinking how to make array operates in "clean read" system, such as borrowing concepts from DOM: `insertAfter`, `insertBefore`, etc.
 
 In the meanwhile, if you need a sorted array without duplicate items, consider implementing your own `Set` class with a comparer: `add` with insertion sort and it influence iterator order.
 
