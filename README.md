@@ -45,7 +45,7 @@ class MapDelta<K, V> {
   delete(key: K): void;
   set(key: K, value: V): void;
 
-  playTo(map: FauxMap<K, V>): void;
+  playTo<T extends FauxMap<K, V>>(map: T): T;
 }
 
 class SetDelta<T> {
@@ -57,7 +57,7 @@ class SetDelta<T> {
   symmetricDifference(other: FauxSet<T>): void;
   union(other: FauxSet<T>): void;
 
-  playTo(set: FauxSet<T>): FauxSet<T>;
+  playTo<TSet extends FauxSet<T>>(set: TSet): TSet;
 }
 ```
 
