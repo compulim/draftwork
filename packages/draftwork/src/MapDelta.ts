@@ -29,7 +29,7 @@ class MapDelta<K, V> {
     this.#entries.push({ type: 'set', key, value });
   }
 
-  playTo(map: FauxMap<K, V>) {
+  playTo<T extends FauxMap<K, V>>(map: T): T {
     for (const entry of this.#entries) {
       switch (entry.type) {
         case 'clear':
@@ -45,6 +45,8 @@ class MapDelta<K, V> {
           break;
       }
     }
+
+    return map;
   }
 }
 

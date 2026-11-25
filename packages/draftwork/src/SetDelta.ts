@@ -4,10 +4,10 @@ type SetDeltaEntry<T> =
   | { type: 'add'; value: T }
   | { type: 'clear' }
   | { type: 'delete'; value: T }
-  | { type: 'difference'; other: Set<T> }
-  | { type: 'intersection'; other: Set<T> }
-  | { type: 'symmetricDifference'; other: Set<T> }
-  | { type: 'union'; other: Set<T> };
+  | { type: 'difference'; other: FauxSet<T> }
+  | { type: 'intersection'; other: FauxSet<T> }
+  | { type: 'symmetricDifference'; other: FauxSet<T> }
+  | { type: 'union'; other: FauxSet<T> };
 
 type FauxSet<T> = {
   add(value: T): void;
@@ -36,19 +36,19 @@ class SetDelta<T> {
     this.#log.push({ type: 'delete', value });
   }
 
-  difference(other: Set<T>) {
+  difference(other: FauxSet<T>) {
     this.#log.push({ type: 'difference', other });
   }
 
-  intersection(other: Set<T>) {
+  intersection(other: FauxSet<T>) {
     this.#log.push({ type: 'intersection', other });
   }
 
-  symmetricDifference(other: Set<T>) {
+  symmetricDifference(other: FauxSet<T>) {
     this.#log.push({ type: 'symmetricDifference', other });
   }
 
-  union(other: Set<T>) {
+  union(other: FauxSet<T>) {
     this.#log.push({ type: 'union', other });
   }
 
