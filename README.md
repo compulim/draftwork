@@ -1,6 +1,6 @@
 # `draftwork`
 
-> This package is built from ground up following strict test driven development principle.
+> This package is built from ground up following strict test-driven development principle.
 
 Pass delta, don't pass complete picture.
 
@@ -106,10 +106,10 @@ Each side owns its complete copy and they do not cross the border. Deltas are dr
 
 ### How to inspect changes inside the `XXXDelta` object?
 
-1. Implement your own `Map`/`Set` class minimally
-   - `Pick<Map<K, V>, 'clear' | 'delete' | 'set'>`
-   - `Pick<Set<T>, 'add' | 'clear' | 'delete'>`
-2. Run `delta.playTo(yourImpl)`, see how the delta object call your implementation
+1. Implement own `Map`/`Set` class minimally
+   - `FauxMap<K, V>` ≈ `Pick<Map<K, V>, 'clear' | 'delete' | 'set'>`
+   - `FauxSet<T>` ≈ `Pick<Set<T>, 'add' | 'clear' | 'delete'>`
+2. Run `delta.playTo(ownImpl)` and see how the delta object play each operation
 
 ### Receiver need to expose the data structure to caller
 
@@ -117,17 +117,17 @@ Expose the data structure in a limited/read-only fashion: as iterable/iterator. 
 
 ### Why array is not supported?
 
-Array is commonly operated by indices and it requires dirty read. `draftwork` prefer transactional environment (clean read). While some operations play well with clean read (`pop`, `push`, `shift`, `unshift`), some don't (`splice`, index accessor, etc.)
+Array is commonly operated by index and it requires dirty read. `draftwork` prefer transactional environment (clean read). While some operations play well with clean read (`pop`, `push`, `shift`, `unshift`), some don't (`splice`, index accessor, etc.)
 
-We are thinking how to make array operates in "clean read" system, such as borrowing the concept from DOM: `insertAfter`, `insertBefore`, etc.
+We are thinking how to make array operates in "clean read" system, such as borrowing concepts from DOM: `insertAfter`, `insertBefore`, etc.
 
-In the meanwhile, if you need a sorted array without duplicate items, consider implementing your own `Set` class with a comparer: `add` with insertion sort.
+In the meanwhile, if you need a sorted array without duplicate items, consider implementing your own `Set` class with a comparer: `add` with insertion sort and it influence iterator order.
 
 ### How to make it perfect immutable?
 
 Depends on type of elements, element inside `Map`/`Set` could be mutable (object) or immutable by nature (primitives).
 
-If perfect immutability is required, when playing the delta on the receiver side, clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
+If perfect immutability is required, when the delta is being played on the receiver side, clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
 
 ### How is this package born?
 
