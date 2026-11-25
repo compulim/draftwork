@@ -7,7 +7,7 @@ type SetDraftEntry<T> =
   | { type: 'symmetricDifference'; other: Set<T> }
   | { type: 'union'; other: Set<T> };
 
-type InferSetValueType<T extends SetDraft<unknown>> = T['~types']['value'];
+type InferSetDraftValue<T extends SetDraft<unknown>> = T['~types']['value'];
 
 class SetDraft<T> {
   #log: SetDraftEntry<T>[] = [];
@@ -103,4 +103,4 @@ class SetDraft<T> {
 }
 
 export default SetDraft;
-export { type InferSetValueType as InferSetDraftValueType };
+export { type InferSetDraftValue };

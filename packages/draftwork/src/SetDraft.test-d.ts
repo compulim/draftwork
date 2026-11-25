@@ -1,7 +1,7 @@
 import { expectType } from 'tsd';
-import SetDraft, { type InferSetDraftValueType } from './SetDraft.ts';
+import SetDraft, { type InferSetDraftValue } from './SetDraft.ts';
 
 const draft = new SetDraft<string>();
-const valueType: InferSetDraftValueType<typeof draft> = undefined as any;
+const valueType: InferSetDraftValue<typeof draft> = undefined as any;
 
 expectType<string>(valueType);
