@@ -106,7 +106,7 @@ In the meanwhile, if you need a sorted array, consider implementing your own `Se
 
 Depends on type of elements, element inside `Map`/`Set` could be mutable (object) or immutable by nature (primitives).
 
-If perfect immutable is needed, when the delta is played on SDK side, the SDK should clone/freeze the newly upserted element.
+If perfect immutability is required, when the delta is being played on SDK side, the SDK should clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
 
 ### How this package is born?
 
