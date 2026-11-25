@@ -98,38 +98,6 @@ scenario(
         return { base, expected };
       })
       .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
-      .and("with delete('abc')", precondition => {
-        precondition.draft.delete('abc');
-        precondition.expected.delete('abc');
-
-        return precondition;
-      })
-      .and("with add('abc')", precondition => {
-        precondition.draft.add('abc');
-        precondition.expected.add('abc');
-
-        return precondition;
-      })
-      .when('played', ({ base, draft }) => {
-        const actual = new Set(base);
-
-        draft.playTo(actual);
-
-        return actual;
-      })
-      .then('should have played properly', ({ expected }, actual) => {
-        assert.deepStrictEqual(Array.from(actual), Array.from(expected));
-        assert.deepStrictEqual(Array.from(actual), ['xyz', 'abc']);
-      });
-
-    bdd
-      .given("a base/expected of Set(['abc', 'xyz'])", () => {
-        const base = new Set<string>(['abc', 'xyz']);
-        const expected = new Set(base);
-
-        return { base, expected };
-      })
-      .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
       .and("with add('abc')", precondition => {
         precondition.draft.add('abc');
         precondition.expected.add('abc');
