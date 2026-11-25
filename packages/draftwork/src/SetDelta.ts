@@ -1,3 +1,5 @@
+type InferSetDeltaValue<T extends SetDelta<unknown>> = T['~types']['value'];
+
 type SetDeltaEntry<T> =
   | { type: 'add'; value: T }
   | { type: 'clear' }
@@ -7,7 +9,12 @@ type SetDeltaEntry<T> =
   | { type: 'symmetricDifference'; other: Set<T> }
   | { type: 'union'; other: Set<T> };
 
-type InferSetDeltaValue<T extends SetDelta<unknown>> = T['~types']['value'];
+type FauxSet<T> = {
+  add(value: T): void;
+  clear(): void;
+  delete(value: T): void;
+  has(value: T): boolean;
+} & Iterable<T>;
 
 class SetDelta<T> {
   #log: SetDeltaEntry<T>[] = [];
@@ -45,7 +52,7 @@ class SetDelta<T> {
     this.#log.push({ type: 'union', other });
   }
 
-  playTo(set: Set<T>): Set<T> {
+  playTo<TSet extends FauxSet<T>>(set: TSet): TSet {
     for (const entry of this.#log) {
       switch (entry.type) {
         case 'add':
