@@ -65,8 +65,11 @@ scenario(
       })
       .then('should have played correctly', ({ expected }, actual) => {
         assert.deepStrictEqual(Array.from(actual), Array.from(expected));
-        assert.deepStrictEqual(Array.from(actual), [['ten', 10], ['one', 1]]);
+        assert.deepStrictEqual(Array.from(actual), [
+          ['ten', 10],
+          ['one', 1]
+        ]);
       });
-    },
+  },
   NodeTest
 );

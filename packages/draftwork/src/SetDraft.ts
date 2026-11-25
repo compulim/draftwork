@@ -13,6 +13,7 @@ class SetDraft<T> {
   #log: SetDraftEntry<T>[] = [];
 
   get ['~types'](): { value: T } {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return {} as any;
   }
 
