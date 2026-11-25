@@ -94,19 +94,19 @@ Each side owns its complete copy, it don't cross the border. Deltas are drafted 
 
 Expose it in a limited/read-only fashion: as iterable/iterator. Don't expose the whole `Map`/`Set` structure to your caller. Conveniences never pay in long run.
 
-### Why there are no array supported?
+### Why array is not supported?
 
-Array is operated by indices and requires dirty read to operate. `draftwork` prefer transactional environment (clean read). While some operations play well with clean read (`pop`, `push`, `shift`, `unshift`), some don't (`splice`, index accessor, etc.)
+Array is commonly operated by indices and it requires dirty read. `draftwork` prefer transactional environment (clean read). While some operations play well with clean read (`pop`, `push`, `shift`, `unshift`), some don't (`splice`, index accessor, etc.)
 
-We are thinking how to make array operates in "clean read" system, such as using DOM notion of `insertAfter`, `insertBefore`, etc.
+We are thinking how to make array operates in "clean read" system, such as borrowing the concept from DOM: `insertAfter`, `insertBefore`, etc.
 
-In the meanwhile, if you need a sorted array, consider implementing your own `Set` class with a comparer: `add` with insertion sort.
+In the meanwhile, if you need a sorted array without duplicate items, consider implementing your own `Set` class with a comparer: `add` with insertion sort.
 
 ### How to make it perfect immutable?
 
 Depends on type of elements, element inside `Map`/`Set` could be mutable (object) or immutable by nature (primitives).
 
-If perfect immutability is required, when the delta is being played on SDK side, the SDK should clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
+If perfect immutability is required, when the delta is being played on SDK side, the SDK can clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
 
 ### How this package is born?
 
