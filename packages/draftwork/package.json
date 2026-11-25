@@ -5,12 +5,17 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     }
   },
   "devDependencies": {
@@ -26,6 +31,7 @@
     "expect": "^30.5.2",
     "prettier": "^3.10.1",
     "publint": "^0.3.25",
+    "tsd": "^0.33.0",
     "tsup": "^9.0.0",
     "typescript": "^6.0.3"
   },
@@ -49,8 +55,13 @@
     "start": "npm run build -- --onSuccess \"touch ../pages/package.json\" --watch",
     "switch": "cat package.json | jq --arg SWITCH_NAME $SWITCH_NAME -r '(.[\"switch:\" + $SWITCH_NAME] // {}) as $TEMPLATE | .devDependencies += ($TEMPLATE.devDependencies // {}) | .dependencies += ($TEMPLATE.dependencies // {})' | tee ./package.json.tmp && mv ./package.json.tmp ./package.json",
     "test": "npm run test:unit && npm run test:types",
-    "test:types": "node --experimental-strip-types --import ./test-harness/test-types.import --test **/*.test-types.ts",
-    "test:unit": "node --experimental-strip-types --experimental-test-coverage --experimental-test-isolation=none --test"
+    "test:types": "npx --offline tsd --files ./src/**/*.test-d.ts",
+    "test:unit": "node --experimental-test-coverage --experimental-test-isolation=none --test"
+  },
+  "tsd": {
+    "compilerOptions": {
+      "allowImportingTsExtensions": true
+    }
   },
   "repository": {
     "type": "git",
