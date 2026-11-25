@@ -6,13 +6,13 @@ Pass delta, don't pass complete picture.
 
 ## Background
 
-Handling `Map`/`Set` immutable objects with 10,000+ entries and high change frequency is expensive.
+It is expensive to handle `Map`/`Set` immutable objects with 100,000+ entries and high frequency of change.
 
 We rethink the pattern: if SDK owns a copy of the object private to itself, it does not need to make the object perfectly immutable.
 
 ## How to use?
 
-Instead of passing the whole `Map`/`Set` object, caller constructs a `XXXDelta` object, pass it to SDK. As long as both caller and SDK are in-sync, SDK should own a copy of `Map`/`Set` object with the cost of `O(log n)`.
+Instead of passing the whole `Map`/`Set` object, caller constructs a `XXXDelta` object, pass it to SDK. As long as both caller and SDK are in-sync, SDK should own its private copy of `Map`/`Set` object with the cost of `O(log n)`.
 
 ```ts
 const delta = new SetDelta();
@@ -79,7 +79,7 @@ Pass the delta, don't pass the complete picture.
 
 Memory stay `O(n)`. Processing down to `O(log n)` from `O(n)`.
 
-Each side owns its complete copy, it don't cross the border. Deltas are drafted and replayed on each side.
+Each side owns its complete copy and they do not cross the border. Deltas are drafted and replayed on each side. Delta can be dropped as soon as the sync is complete.
 
 ## Behaviors
 
@@ -92,7 +92,7 @@ Each side owns its complete copy, it don't cross the border. Deltas are drafted 
 
 ### SDK need to expose the data structure to caller
 
-Expose it in a limited/read-only fashion: as iterable/iterator. Don't expose the whole `Map`/`Set` structure to your caller. Conveniences never pay in long run.
+Expose the data structure in a limited/read-only fashion: as iterable/iterator. Don't expose the whole `Map`/`Set` structure to your caller. Conveniences never pay in long run.
 
 ### Why array is not supported?
 
@@ -106,15 +106,15 @@ In the meanwhile, if you need a sorted array without duplicate items, consider i
 
 Depends on type of elements, element inside `Map`/`Set` could be mutable (object) or immutable by nature (primitives).
 
-If perfect immutability is required, when the delta is being played on SDK side, the SDK can clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
+If perfect immutability is required, when playing the delta on SDK side, clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
 
 ### How this package is born?
 
 We are UI component developers. UI responsiveness is a very important benchmark to our success.
 
-At times, we need to handle data structure with 100,000+ of items. As we build UI components, we also need to be careful that caller may accidentally change their input. Immutability protect our system.
+At times, we need to handle data structure with 100,000+ of items. We also need to be careful that caller may accidentally change their input. Immutability protect our system.
 
-Having an immutable list of 100,000+ items with high change frequency bring down our system performance. We are rethinking how this can be done and created this package.
+Having an immutable list of 100,000+ items with high frequency of change will bring down our system performance. We are rethinking how this can be done and created this package.
 
 ## Contributions
 
