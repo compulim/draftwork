@@ -44,6 +44,7 @@ scenario(
       })
       .and('a draft', precondition => ({ ...precondition, draft: new MapDraft<string, number>() }))
       .and("with delete('one')", precondition => {
+        // Should not throw on non-existent delete.
         precondition.draft.delete('one');
         precondition.expected.delete('one');
 
@@ -66,6 +67,6 @@ scenario(
         assert.deepStrictEqual(Array.from(actual), Array.from(expected));
         assert.deepStrictEqual(Array.from(actual), [['ten', 10], ['one', 1]]);
       });
-  },
+    },
   NodeTest
 );

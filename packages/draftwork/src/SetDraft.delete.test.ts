@@ -41,6 +41,7 @@ scenario(
       })
       .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
       .and("with delete('xyz')", precondition => {
+        // Should not throw on non-existent delete.
         precondition.draft.delete('xyz');
         precondition.expected.delete('xyz');
 
