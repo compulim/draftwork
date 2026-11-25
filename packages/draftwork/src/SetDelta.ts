@@ -1,4 +1,4 @@
-type SetDraftEntry<T> =
+type SetDeltaEntry<T> =
   | { type: 'add'; value: T }
   | { type: 'clear' }
   | { type: 'delete'; value: T }
@@ -7,10 +7,10 @@ type SetDraftEntry<T> =
   | { type: 'symmetricDifference'; other: Set<T> }
   | { type: 'union'; other: Set<T> };
 
-type InferSetDraftValue<T extends SetDraft<unknown>> = T['~types']['value'];
+type InferSetDeltaValue<T extends SetDelta<unknown>> = T['~types']['value'];
 
-class SetDraft<T> {
-  #log: SetDraftEntry<T>[] = [];
+class SetDelta<T> {
+  #log: SetDeltaEntry<T>[] = [];
 
   get ['~types'](): { value: T } {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -100,5 +100,5 @@ class SetDraft<T> {
   }
 }
 
-export default SetDraft;
-export { type InferSetDraftValue };
+export default SetDelta;
+export { type InferSetDeltaValue };

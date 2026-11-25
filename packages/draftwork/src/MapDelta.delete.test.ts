@@ -1,10 +1,10 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import MapDraft from './MapDraft.ts';
+import MapDelta from './MapDelta.ts';
 
 scenario(
-  'MapDraft',
+  'MapDelta',
   bdd => {
     bdd
       .given("a base/expected of Map([['one', 1], ['two', 2]])", () => {
@@ -16,17 +16,17 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new MapDraft<string, number>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new MapDelta<string, number>() }))
       .and("with delete('one')", precondition => {
-        precondition.draft.delete('one');
+        precondition.delta.delete('one');
         precondition.expected.delete('one');
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Map(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })
@@ -42,24 +42,24 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new MapDraft<string, number>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new MapDelta<string, number>() }))
       .and("with delete('one')", precondition => {
         // Should not throw on non-existent delete.
-        precondition.draft.delete('one');
+        precondition.delta.delete('one');
         precondition.expected.delete('one');
 
         return precondition;
       })
       .and("with set('one', 1)", precondition => {
-        precondition.draft.set('one', 1);
+        precondition.delta.set('one', 1);
         precondition.expected.set('one', 1);
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Map(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })

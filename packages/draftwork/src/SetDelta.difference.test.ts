@@ -1,10 +1,10 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import SetDraft from './SetDraft.ts';
+import SetDelta from './SetDelta.ts';
 
 scenario(
-  'SetDraft',
+  'SetDelta',
   bdd => {
     bdd
       .given("a base/expected of Set(['abc', 'xyz'])", () => {
@@ -13,17 +13,17 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new SetDelta<string>() }))
       .and("with difference(['abc'])", precondition => {
-        precondition.draft.difference(new Set(['abc']));
+        precondition.delta.difference(new Set(['abc']));
         precondition.expected = precondition.expected.difference(new Set(['abc']));
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Set(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })

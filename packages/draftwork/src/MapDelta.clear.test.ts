@@ -1,10 +1,10 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import MapDraft from './MapDraft.ts';
+import MapDelta from './MapDelta.ts';
 
 scenario(
-  'MapDraft',
+  'MapDelta',
   bdd => {
     bdd
       .given("a base/expected of Map([['ten', 10]])", () => {
@@ -13,17 +13,17 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new MapDraft<string, number>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new MapDelta<string, number>() }))
       .and('with clear()', precondition => {
-        precondition.draft.clear();
+        precondition.delta.clear();
         precondition.expected.clear();
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Map(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })

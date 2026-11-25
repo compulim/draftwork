@@ -1,16 +1,16 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import SetDraft from './SetDraft.ts';
+import SetDelta from './SetDelta.ts';
 
 scenario(
-  'SetDraft',
+  'SetDelta',
   bdd => {
     bdd
-      .given('a draft', () => new SetDraft<string>())
-      .when('played to an empty Set', draft => {
+      .given('a delta', () => new SetDelta<string>())
+      .when('played to an empty Set', delta => {
         const set = new Set<string>();
-        const returnValue = draft.playTo(set);
+        const returnValue = delta.playTo(set);
 
         return { returnValue, set };
       })

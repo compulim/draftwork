@@ -1,10 +1,10 @@
-type InferMapDraftKey<T extends MapDraft<unknown, unknown>> = T['~types']['key'];
-type InferMapDraftValue<T extends MapDraft<unknown, unknown>> = T['~types']['value'];
+type InferMapDeltaKey<T extends MapDelta<unknown, unknown>> = T['~types']['key'];
+type InferMapDeltaValue<T extends MapDelta<unknown, unknown>> = T['~types']['value'];
 
-type MapDraftEntry<K, V> = { type: 'clear' } | { type: 'delete'; key: K } | { type: 'set'; key: K; value: V };
+type MapDeltaEntry<K, V> = { type: 'clear' } | { type: 'delete'; key: K } | { type: 'set'; key: K; value: V };
 
-class MapDraft<K, V> {
-  #entries: MapDraftEntry<K, V>[] = [];
+class MapDelta<K, V> {
+  #entries: MapDeltaEntry<K, V>[] = [];
 
   get ['~types'](): { key: K; value: V } {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,5 +42,5 @@ class MapDraft<K, V> {
   }
 }
 
-export default MapDraft;
-export type { InferMapDraftKey, InferMapDraftValue };
+export default MapDelta;
+export type { InferMapDeltaKey, InferMapDeltaValue };

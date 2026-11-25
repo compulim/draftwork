@@ -1,10 +1,10 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import SetDraft from './SetDraft.ts';
+import SetDelta from './SetDelta.ts';
 
 scenario(
-  'SetDraft',
+  'SetDelta',
   bdd => {
     bdd
       .given("a base/expected of Set(['abc', 'xyz'])", () => {
@@ -13,17 +13,17 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new SetDelta<string>() }))
       .and("with delete('xyz')", precondition => {
-        precondition.draft.delete('xyz');
+        precondition.delta.delete('xyz');
         precondition.expected.delete('xyz');
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Set(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })
@@ -39,23 +39,23 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new SetDelta<string>() }))
       .and("with delete('abc')", precondition => {
-        precondition.draft.delete('abc');
+        precondition.delta.delete('abc');
         precondition.expected.delete('abc');
 
         return precondition;
       })
       .and("with add('abc')", precondition => {
-        precondition.draft.add('abc');
+        precondition.delta.add('abc');
         precondition.expected.add('abc');
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Set(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })
@@ -71,18 +71,18 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
+      .and('a delta', precondition => ({ ...precondition, delta: new SetDelta<string>() }))
       .and("with delete('xyz')", precondition => {
         // Should not throw on non-existent delete.
-        precondition.draft.delete('xyz');
+        precondition.delta.delete('xyz');
         precondition.expected.delete('xyz');
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Set(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })

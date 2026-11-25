@@ -1,15 +1,15 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import SetDraft from './SetDraft.ts';
+import SetDelta from './SetDelta.ts';
 
 scenario(
-  'SetDraft',
+  'SetDelta',
   bdd => {
     bdd
-      .given('a draft', () => new SetDraft<string>())
-      .when("['~types'] getter is called", draft => {
-        return draft['~types'];
+      .given('a delta', () => new SetDelta<string>())
+      .when("['~types'] getter is called", delta => {
+        return delta['~types'];
       })
       .then('should return a plain object', (_, returnValue) => {
         assert.strictEqual(Object.getPrototypeOf(returnValue), Object.prototype);

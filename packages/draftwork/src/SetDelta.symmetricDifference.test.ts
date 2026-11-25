@@ -1,10 +1,10 @@
 import { scenario } from '@testduet/given-when-then';
 import assert from 'node:assert';
 import * as NodeTest from 'node:test';
-import SetDraft from './SetDraft.ts';
+import SetDelta from './SetDelta.ts';
 
 scenario(
-  'SetDraft',
+  'SetDelta',
   bdd => {
     bdd
       .given("a base/expected of Set(['abc', 'def'])", () => {
@@ -13,24 +13,23 @@ scenario(
 
         return { base, expected };
       })
-      .and('a draft', precondition => ({ ...precondition, draft: new SetDraft<string>() }))
-      .and("with union(['def', 'xyz'])", precondition => {
-        const unionWith = new Set(['def', 'xyz']);
-
-        precondition.draft.union(unionWith);
-        precondition.expected = precondition.expected.union(unionWith);
+      .and('a delta', precondition => ({ ...precondition, delta: new SetDelta<string>() }))
+      .and("with symmetricDifference(['def', 'xyz'])", precondition => {
+        precondition.delta.symmetricDifference(new Set(['def', 'xyz']));
+        precondition.expected = precondition.expected.symmetricDifference(new Set(['def', 'xyz']));
 
         return precondition;
       })
-      .when('played', ({ base, draft }) => {
+      .when('played', ({ base, delta }) => {
         const actual = new Set(base);
 
-        draft.playTo(actual);
+        delta.playTo(actual);
 
         return actual;
       })
       .then('should have played correctly', ({ expected }, actual) => {
         assert.deepStrictEqual(Array.from(actual), Array.from(expected));
+        assert.deepStrictEqual(Array.from(actual), ['abc', 'xyz']);
       });
   },
   NodeTest
