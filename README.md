@@ -8,34 +8,11 @@ Pass delta, don't pass complete picture.
 
 Handling `Map`/`Set` immutable objects with 10,000+ entries and high change frequency is expensive.
 
-This is our pattern proposal for high performance immutable system.
-
-### Immutability is great
-
-Immutability is great for SDK, it lockdown input and output, and simplify equality checks. However, it requires cloning and freezing. This could be expensive at times.
-
-Note: JavaScript built-in `Map`/`Set` cannot be frozen, extra work is needed.
-
-### Solution
-
-> SDK owns a copy of the object private to itself, it does not need to make the object immutable.
-
-Pass the delta, don't pass the complete picture.
-
-- (Optional) Caller has their own copy of data, build from scratch
-- Caller draft the change as delta (multiple `add`/`delete`/`set`, etc.)
-- (Optional) Caller apply the delta to its own copy
-- Caller pass the delta to SDK
-- SDK build their own complete copy from scratch too
-- SDK apply the delta to its own copy (cheaper than clone/freeze)
-
-Memory stay `O(n)`. Processing down to `O(log n)` from `O(n)`.
-
-Each side owns its copy of the complete copy of the data, it don't cross the border. Deltas are drafted and replayed on both side.
+We rethink the pattern: if SDK owns a copy of the object private to itself, it does not need to make the object perfectly immutable.
 
 ## How to use?
 
-Caller constructs a `XXXDelta` object, play it on its copy of data, pass the delta to SDK.
+Instead of passing the whole `Map`/`Set` object, caller constructs a `XXXDelta` object, pass it to SDK. As long as both caller and SDK are in-sync, SDK should own a copy of `Map`/`Set` object with the cost of `O(log n)`.
 
 ```ts
 const delta = new SetDelta();
@@ -80,6 +57,30 @@ class SetDelta<T> {
 }
 ```
 
+## Design
+
+### Immutability is great
+
+Immutability is great for SDK, it lockdown input and output, and simplify equality checks. However, it requires cloning and freezing. This could be expensive at times.
+
+Note: JavaScript built-in `Map`/`Set` cannot be frozen, extra work is needed.
+
+### Solution
+
+Pass the delta, don't pass the complete picture.
+
+- (Optional) Caller has their own copy of data, build from scratch
+- Caller draft the change as delta (multiple `add`/`delete`/`set`, etc.)
+- (Optional) Caller apply the delta to its own copy
+- Caller pass the delta to SDK
+- SDK build their own complete copy from scratch too
+- SDK apply the delta to its own copy (cheaper than clone/freeze)
+- (Optional) To maintain perfect immutability, SDK clone/freeze upserted elements
+
+Memory stay `O(n)`. Processing down to `O(log n)` from `O(n)`.
+
+Each side owns its copy of the complete copy of the data, it don't cross the border. Deltas are drafted and replayed on both side.
+
 ## Behaviors
 
 ### How to inspect changes inside the `XXXDelta` object?
@@ -100,6 +101,12 @@ Array is operated by indices and requires dirty read to operate. `draftwork` pre
 We are thinking how to make array operates in "clean read" system, such as using DOM notion of `insertAfter`, `insertBefore`, etc.
 
 In the meanwhile, if you need a sorted array, consider implementing your own `Set` class with a comparer: `add` with insertion sort.
+
+### How to make it perfect immutable?
+
+Depends on type of elements, element inside `Map`/`Set` could be mutable (object) or immutable by nature (primitives).
+
+If perfect immutable is needed, when the delta is played on SDK side, the SDK should clone/freeze the newly upserted element.
 
 ### How this package is born?
 
