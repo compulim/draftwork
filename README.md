@@ -108,7 +108,7 @@ Depends on type of elements, element inside `Map`/`Set` could be mutable (object
 
 If perfect immutability is required, when playing the delta on SDK side, clone/freeze the newly upserted element. This can be done by implementing an overlay `Map`/`Set` class.
 
-### How this package is born?
+### How is this package born?
 
 We are UI component developers. UI responsiveness is a very important benchmark to our success.
 
