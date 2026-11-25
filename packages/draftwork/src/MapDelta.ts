@@ -3,6 +3,12 @@ type InferMapDeltaValue<T extends MapDelta<unknown, unknown>> = T['~types']['val
 
 type MapDeltaEntry<K, V> = { type: 'clear' } | { type: 'delete'; key: K } | { type: 'set'; key: K; value: V };
 
+type FauxMap<K, V> = {
+  clear(): void;
+  delete(key: K): void;
+  set(key: K, value: V): void;
+};
+
 class MapDelta<K, V> {
   #entries: MapDeltaEntry<K, V>[] = [];
 
@@ -23,7 +29,7 @@ class MapDelta<K, V> {
     this.#entries.push({ type: 'set', key, value });
   }
 
-  playTo(map: Map<K, V>) {
+  playTo(map: FauxMap<K, V>) {
     for (const entry of this.#entries) {
       switch (entry.type) {
         case 'clear':
