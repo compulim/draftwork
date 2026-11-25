@@ -33,8 +33,8 @@ scenario(
       });
 
     bdd
-      .given('a base/expected of empty Set', () => {
-        const base = new Set<string>();
+      .given("a base/expected of Set(['abc'])", () => {
+        const base = new Set<string>(['abc']);
         const expected = new Set(base);
 
         return { base, expected };
@@ -49,17 +49,13 @@ scenario(
       .when('played', ({ base, draft }) => {
         const actual = new Set(base);
 
-        try {
-          draft.playTo(actual);
-        } catch (error) {
-          return error;
-        }
+        draft.playTo(actual);
 
-        return undefined;
+        return actual;
       })
-      .then('should throw', (_, error) => {
-        assert(error instanceof TypeError);
-        assert(error.message.includes('non-existent'));
+      .then('should have played proeprly', ({ expected }, actual) => {
+        assert.deepStrictEqual(Array.from(actual), Array.from(expected));
+        assert.deepStrictEqual(Array.from(actual), ['abc']);
       });
   },
   NodeTest

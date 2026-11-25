@@ -56,10 +56,7 @@ class SetDraft<T> {
           break;
 
         case 'delete':
-          if (!set.delete(entry.value)) {
-            throw new TypeError(`Cannot delete non-existent value "${entry.value}" from the set`);
-          }
-
+          set.delete(entry.value);
           break;
 
         case 'difference':
